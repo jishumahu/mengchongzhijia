@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>列表页</h3>
+        <h3>萌宠常识</h3>
         <my-header></my-header>
         <main></main>
         <my-footer></my-footer>

@@ -26,23 +26,41 @@ Vue.use(Vuex)
 //3.3 创建存储对象
 var store=new Vuex.Store({
   state:{//集中管理数据属性
-
+    uname:"",
+    islogin:false
   },
   getters:{//集中 获取数据函数
-
+    getUser(state){
+      var obj={uname:state.uname,islogin:state.islogin}
+      return obj
+    }
   },
   mutations:{//集中 修改数据函数
-
+    login(state,data){//登录
+      state.uname=data;
+      state.islogin=true;
+    },
+    signout(state){//注销
+      state.uname="";
+      state.islogin=false;
+    },
+    isLogin(state){//刷新页面时调用，根据sessionStorage中islogin判断登录状态，并修改store中的值
+      if(!state.islogin){
+        state.uname=sessionStorage.getItem('uname');
+        state.islogin=sessionStorage.getItem('islogin')
+      }
+      return state.islogin;
+    }
   },
   actions:{//保存函数，异步修改
 
   }
 })
 //引入全局变量 页头 页尾
-// import MyHeader from './components/MyHeader.vue'
-// import MyFooter from './components/MyFooter.vue'
-// Vue.component("my-header",MyHeader)
-// Vue.component("my-footer",MyFooter)
+import MyHeader from './components/MyHeader.vue'
+import MyFooter from './components/MyFooter.vue'
+Vue.component("my-header",MyHeader)
+Vue.component("my-footer",MyFooter)
 new Vue({
   router,
   // store,

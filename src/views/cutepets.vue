@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>列表页</h3>
+        <h3>猫咪列表</h3>
         <my-header></my-header>
         <main></main>
         <my-footer></my-footer>
