@@ -16,7 +16,7 @@ import axios from 'axios'
 //2.2 配置axios,设置属性发送ajax请求时保存session信息
 axios.defaults.withCredentials=true
 //2.3 设置ajax请求时的基本路径
-axios.defaults.baseURL="http://127.0.0.1:3000"
+axios.defaults.baseURL="http://127.0.0.1:5050/"
 //2.4 注册axios
 Vue.prototype.axios=axios
 //3.1 引入第三方模块vuex

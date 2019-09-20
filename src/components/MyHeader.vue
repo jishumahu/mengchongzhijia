@@ -8,7 +8,7 @@
                 <h6 class="huptxt">宠物之家欢迎您~</h6>
                 <!-- 右侧 -->
                 <div class="hupleft">
-                    <ul id="d1" class="d-flex hupul">
+                    <ul id="d1" class=" hupul">
                         <li>
                             <router-link :to="{path:'login'}">登录</router-link>
                         </li>
@@ -17,7 +17,7 @@
                             <router-link :to="{path:'reg'}">注册</router-link>
                         </li>
                     </ul>
-                    <ul id="d2" class="row hupul"  style="display:none">
+                    <ul id="d2" class=" hupul" >
                         <li>
                             <span class="text-success pr-2">欢迎<span class="my_bigger px-2">{{this.uname}}</span></span>
                         </li>
@@ -74,7 +74,7 @@
                         <router-link :to="{path:'aboutpet'}">铲屎官的自我修养</router-link>
                     </li>
                     <li class="hdownli">
-                        <a href="javascript:;">关于我们</a>
+                        <router-link :to="{path:'aboutus'}">关于我们</router-link>
                     </li>
                 </ul>
             </div>
@@ -96,8 +96,8 @@ export default {
             this.$router.replace("products/"+this.kw)
         },
         signout(){//注销
-            $("#d1").css("display","inline-block");
             $("#d2").css("display","none");
+            $("#d1").css("display","flex");
             this.$store.commit("signout");
             sessionStorage.removeItem('uname');
             sessionStorage.removeItem('islogin');
@@ -105,10 +105,10 @@ export default {
         begin(){//页面DOM树构建完成，根据用户登陆状态判断d1,d2显示状态
             if(this.islogin){
                 $("#d1").css("display","none");
-                $("#d2").css("display","inline-block");
+                $("#d2").css("display","flex");
             }else{
-                $("#d1").css("display","inline-block");
                 $("#d2").css("display","none");
+                $("#d1").css("display","flex");
             }
         },
         gotocart(){//前往购物车
@@ -180,5 +180,11 @@ ul{list-style:none;}
     color:#FAB7DA; 
     background:url("../assets/img/header/cat.png") no-repeat 100% center;
     background-size:contain; 
+}
+#d1{
+    display:inline-block
+}
+#d2{
+    display:none
 }
 </style>

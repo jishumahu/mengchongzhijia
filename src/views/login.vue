@@ -2,12 +2,15 @@
     <div>
         <my-header></my-header>
         <main>
-            <div>
-                <h3>猫咪会员登录</h3>
-                <p>用户名:<input placeholder="请输入用户名" id="uname" v-model="uname" @blur="unameblur" @focus="unamefocus"><span id="utxt">请输入3~12位数字或字母，不能以数字开头</span></p>
-                <p>密&nbsp;&nbsp;&nbsp;&nbsp;码:<input type="password" placeholder="请输入密码" v-model="upwd" id="upwd" @focus="upwdfocus" @blur="upwdblur"><span id="ptxt">请输入6~12位数字或字母</span></p>
-                <p>验证码:<input placeholder="请输入下方验证码" id="test" v-model="reg" @blur="testblur"><span id="ttest"></span></p>
-                <canvas width="200" height="60" id="check">您的浏览器不支持canvas标签！请升级浏览器</canvas><a @click="drawCanvas" href="javascript:;">看不清楚？点击切换</a>
+            <div class="login">
+                <div class="d-flex">
+                    <h3>猫咪会员登录</h3>
+                    <router-link :to="{path:'reg'}">新用户注册</router-link>
+                </div>
+                <div>用户名:<input placeholder="请输入用户名" id="uname" v-model="uname" @blur="unameblur" @focus="unamefocus"><span id="utxt">请输入3~12位数字或字母，不能以数字开头</span></div>
+                <div>密&nbsp;&nbsp;&nbsp;&nbsp;码:<input type="password" placeholder="请输入密码" v-model="upwd" id="upwd" @focus="upwdfocus" @blur="upwdblur"><span id="ptxt">请输入6~12位数字或字母</span></div>
+                <div>验证码:<input placeholder="请输入下方验证码" id="test" v-model="reg" @blur="testblur"><span id="ttest"></span></div>
+                <canvas width="200" height="60" id="check" @click="drawCanvas">您的浏览器不支持canvas标签！请升级浏览器</canvas><a @click="drawCanvas" href="javascript:;" class="changecan">看不清楚？点击切换</a>
                 <mt-button @click="login">登录</mt-button>
             </div>
         </main>
@@ -27,11 +30,11 @@ export default {
     },
     methods:{
         testblur(){//转小写再比较
-            var str=this.str;
-            var reg=this.reg;
+            var str=this.str.toLowerCase();
+            var reg=this.reg.toLowerCase();
             if(str==reg){
                 $("#ttest").css("color","green")
-                html("验证成功！")
+                .html("验证成功！")
             }else{
                 $("#ttest").css("color","red")
                 .html("验证失败！")
@@ -42,7 +45,7 @@ export default {
             // utxt.style.display="block"
             $("#utxt").css({display:"block",color:"#000"});
         },
-        upwdfocus(){//焦点输入框获取焦点
+        upwdfocus(){//焦点输入框获取焦点   //验证修改
             if($("#utxt").css("display")=="block"){
                 $("#txt").css("display","none")
             };
@@ -54,6 +57,7 @@ export default {
                 $("#utxt").css("color","red");
                 $("#utxt").html("用户名格式不正确！！");
                 this.uname="";
+                $("#uname").focus();
                 return;
             }else{
                 $("#utxt").css("color","green");
@@ -87,7 +91,7 @@ export default {
                 $("#upwd").focus();
                 return;
             }
-            if($("#ttest").innerHTML!="验证成功！"){
+            if($("#ttest").html()!="验证成功！"){
                 this.$messagebox("消息","请先进行验证！");
                 $("#test").focus();
                 return;
@@ -96,21 +100,17 @@ export default {
             var url="user/login";
             this.axios.get(url,obj).then(res=>{
                 if(res.data.code==1){
-                    this.$toast(`登陆成功!${this.n}s后跳转到首页`); 
-                    var timer=setInterval(()=>{                  
-                        this.n--;
-                        if(this.n==0){
-                        clearInterval(timer);
-                        this.$router.push("/")
-                        }
-                    },1000); 
+                    this.$toast("登陆成功!");
+                    this.$store.commit("login",this.uname); 
+                    sessionStorage.setItem("uname",this.uname); 
+                    sessionStorage.setItem("islogin",true); 
+                    this.$router.push("/");
                 }else{
                     this.$toast("用户名或密码错误！");
                     this.uname="";
                     this.upwd="";
                     $("#uname").focus();
                 }
-
             })
         },
         /*产生一个随机数 可设置随机数区间*/
@@ -229,11 +229,26 @@ export default {
 }
 </script>
 <style  scoped>
+    main{
+        height:800px;
+        background: url('../assets/img/others/login.jpg') no-repeat center center;
+        background-size:cover;
+        position:relative;
+    }
+    .login{
+        position:absolute;
+        top:15%;
+        left:55%
+    }
     #check{
         border:1px solid #000;
     }
     #utxt,#ptxt{
         display:none;
         font-size:12px;
+    }
+    .changecan{
+        color:#222;
+        text-decoration: none
     }
 </style>
